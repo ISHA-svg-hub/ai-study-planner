@@ -3,6 +3,8 @@
 A smart, browser-based web app that generates a **personalized study schedule** for students preparing for exams. Built using prompt engineering and Google Gemini 2.5 through OpenRouter, this app helps students plan effectively based on time, subjects, and priorities.
 
 ![image](https://github.com/user-attachments/assets/377c7263-0bb1-4f44-95c5-58dcc7478c3d)
+![image](https://github.com/user-attachments/assets/72d83477-5293-46ee-aea1-785c5a84ea5c)
+
 
 
 
