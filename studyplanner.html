@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart AI Study Planner</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0f7fa, #fce4ec);
+      color: #333;
+      padding: 40px;
+      margin: 0;
+    }
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #00796b;
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+    button {
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background: #00796b;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #004d40;
+    }
+    pre {
+      white-space: pre-wrap;
+      background: #f1f8e9;
+      padding: 20px;
+      border-radius: 12px;
+      margin-top: 30px;
+      font-size: 16px;
+      line-height: 1.5;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📚 Smart AI Study Planner</h1>
+    <p style="text-align:center; font-size: 14px; margin-bottom: 25px;">
+      Plan your studies smarter with the power of Google Gemini 2.5!
+    </p>
+
+    <label>📘 Subjects (comma-separated):</label>
+    <input type="text" id="subjects" placeholder="e.g. Math, Physics, Chemistry">
+
+    <label>⏱️ Hours per day:</label>
+    <input type="number" id="hours" placeholder="e.g. 4">
+
+    <label>📆 Days until exam:</label>
+    <input type="number" id="days" placeholder="e.g. 10">
+
+    <label>🎯 Priority Subject:</label>
+    <input type="text" id="priority" placeholder="e.g. Physics">
+
+    <button onclick="generateSchedule()">Generate Study Schedule</button>
+
+    <pre id="output">Your personalized schedule will appear here...</pre>
+  </div>
+
+  <div class="footer">
+    Built with 💡 using Google Gemini 2.5 & Prompt Engineering
+  </div>
+
+  <script>
+    async function generateSchedule() {
+      const subjects = document.getElementById("subjects").value;
+      const hours = document.getElementById("hours").value;
+      const days = document.getElementById("days").value;
+      const priority = document.getElementById("priority").value;
+
+      const prompt = `You are an expert academic planner. I have ${days} days until exams and can study ${hours} hours per day. My subjects are: ${subjects}. Please create a detailed and realistic day-by-day study schedule, prioritizing ${priority}. Format clearly with days and subjects.`;
+
+      document.getElementById("output").textContent = "⏳ Generating your study schedule...";
+
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Authorization": "Bearer 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",  // Replace with your OpenRouter API key
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            model: "google/gemini-pro",
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+
+        const data = await response.json();
+        const result = data.choices?.[0]?.message?.content || "❌ Failed to get response. Try again.";
+        document.getElementById("output").textContent = result;
+
+      } catch (error) {
+        document.getElementById("output").textContent = "⚠️ Error fetching response. Check console.";
+        console.error("Error:", error);
+      }
+    }
+  </script>
+</body>
+</html>
